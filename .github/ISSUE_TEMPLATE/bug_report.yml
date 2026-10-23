@@ -1,0 +1,43 @@
+name: Bug report
+description: Report wrong output or a CLI problem using synthetic inputs only.
+title: "bug: "
+labels: [bug]
+body:
+  - type: checkboxes
+    id: searched
+    attributes:
+      label: Before reporting
+      options:
+        - label: I searched existing issues and removed personal data and credentials.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: llms-txt-gen version
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Operating system and Node.js version
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: A small synthetic folder layout and the exact command.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result and logs
+    validations:
+      required: true
