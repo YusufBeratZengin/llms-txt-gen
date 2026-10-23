@@ -1,0 +1,64 @@
+{
+  "name": "llms-txt-gen",
+  "version": "0.1.0",
+  "description": "Generate and validate llms.txt and llms-full.txt from a repository or a folder of Markdown docs",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "llms-txt-gen": "bin/llms-txt-gen.mjs"
+  },
+  "exports": {
+    ".": "./src/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "bin",
+    "src",
+    "examples",
+    "README.md",
+    "README.tr.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "test": "node --experimental-test-coverage scripts/test.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm test",
+    "demo": "node scripts/make-demo.mjs",
+    "prepublishOnly": "npm run lint && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "eslint": "^9.39.0",
+    "typescript": "^5.9.0"
+  },
+  "license": "MIT",
+  "author": "Yusuf Berat Zengin",
+  "keywords": [
+    "llms-txt",
+    "llms.txt",
+    "llmstxt",
+    "llm",
+    "documentation",
+    "markdown",
+    "ai",
+    "cli",
+    "generator"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YusufBeratZengin/llms-txt-gen.git"
+  },
+  "homepage": "https://github.com/YusufBeratZengin/llms-txt-gen#readme",
+  "bugs": {
+    "url": "https://github.com/YusufBeratZengin/llms-txt-gen/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
