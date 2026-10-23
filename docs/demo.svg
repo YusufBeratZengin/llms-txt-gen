@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1279.5" height="583" viewBox="0 0 1279.5 583" role="img" aria-labelledby="title desc">
+  <title id="title">llms-txt-gen output</title>
+  <desc id="desc">Real output of node examples/demo.mjs: an llms.txt generated from a small sample documentation folder.</desc>
+  <rect x="1" y="1" width="1277.5" height="581" rx="16" fill="#0d1117" stroke="#30363d"/>
+  <path d="M17 1h1245.5a16 16 0 0 1 16 16v33H1V17A16 16 0 0 1 17 1Z" fill="#161b22"/>
+  <g>
+    <circle cx="25" cy="25" r="6" fill="#ff5f57"/>
+    <circle cx="45" cy="25" r="6" fill="#febc2e"/>
+    <circle cx="65" cy="25" r="6" fill="#28c840"/>
+  </g>
+  <text x="639.75" y="30" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="13">llms-txt-gen</text>
+  <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="14" xml:space="preserve">
+    <text x="32" y="88" fill="#a5b4fc">$ node examples/demo.mjs</text>
+    <text x="32" y="111" fill="#fbbf24"># Acme Widgets</text>
+    <text x="32" y="134" fill="#d1d5db"></text>
+    <text x="32" y="157" fill="#8b949e">&gt; Acme Widgets is a fictional widget toolkit used to demonstrate llms-txt-gen.</text>
+    <text x="32" y="180" fill="#d1d5db"></text>
+    <text x="32" y="203" fill="#fbbf24">## Docs</text>
+    <text x="32" y="226" fill="#d1d5db"></text>
+    <text x="32" y="249" fill="#d1d5db">- [Acme Widgets](https://docs.example.com/README): Acme Widgets is a fictional widget toolkit used to demonstrate llms-txt-gen.</text>
+    <text x="32" y="272" fill="#d1d5db"></text>
+    <text x="32" y="295" fill="#fbbf24">## Api</text>
+    <text x="32" y="318" fill="#d1d5db"></text>
+    <text x="32" y="341" fill="#d1d5db">- [Widget API](https://docs.example.com/api/widget): The Widget class renders a single widget and exposes render(), update() and destroy().</text>
+    <text x="32" y="364" fill="#d1d5db"></text>
+    <text x="32" y="387" fill="#fbbf24">## Guides</text>
+    <text x="32" y="410" fill="#d1d5db"></text>
+    <text x="32" y="433" fill="#d1d5db">- [Quickstart](https://docs.example.com/guides/quickstart): Install Acme Widgets and render your first widget in five minutes.</text>
+    <text x="32" y="456" fill="#d1d5db">- [Theming](https://docs.example.com/guides/theming): Widgets read colors and spacing from a theme object, so one change restyles every widget.</text>
+    <text x="32" y="479" fill="#d1d5db"></text>
+    <text x="32" y="502" fill="#fbbf24">## Optional</text>
+    <text x="32" y="525" fill="#d1d5db"></text>
+    <text x="32" y="548" fill="#d1d5db">- [Changelog](https://docs.example.com/CHANGELOG): All notable changes to Acme Widgets are listed here.</text>
+  </g>
+</svg>
