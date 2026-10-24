@@ -70,6 +70,21 @@ test('usage errors exit with 2', () => {
   }
 });
 
+test('relative links resolve from each output directory', () => {
+  const dir = fixture({ 'docs/my guide.md': '# Guide\n\nHow to.\n' });
+  const run = memoryIO(dir);
+  assert.equal(main(['docs', '--out', 'llms.txt', '--full-out', 'build/all.txt'], run.io), 0);
+  assert.match(fs.readFileSync(path.join(dir, 'llms.txt'), 'utf8'), /\(docs\/my%20guide\.md\)/);
+  assert.match(fs.readFileSync(path.join(dir, 'build/all.txt'), 'utf8'), /Source: \.\.\/docs\/my%20guide\.md/);
+  assert.equal(main(['docs', '--out', 'build/llms.txt', '--strip-ext'], memoryIO(dir).io), 0);
+  assert.match(fs.readFileSync(path.join(dir, 'build/llms.txt'), 'utf8'), /\(\.\.\/docs\/my%20guide\)/);
+  assert.equal(main(['docs', '--out', 'build/llms.txt', '--base-url', 'https://example.com'], memoryIO(dir).io), 0);
+  assert.match(fs.readFileSync(path.join(dir, 'build/llms.txt'), 'utf8'), /\(https:\/\/example.com\/my%20guide\.md\)/);
+  const stdout = memoryIO(dir);
+  assert.equal(main(['docs', '--stdout'], stdout.io), 0);
+  assert.match(stdout.out, /\(my%20guide\.md\)/);
+});
+
 test('an empty directory still produces a title and a warning', () => {
   const dir = fixture({ 'x.txt': 'nothing' });
   const run = memoryIO(dir);

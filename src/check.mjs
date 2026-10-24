@@ -5,7 +5,7 @@
  * @typedef {{ ok: boolean, errors: Issue[], warnings: Issue[] }} CheckResult
  */
 
-const LINK = /^\[([^\]]*)\]\(([^)]*)\)(.*)$/;
+const LINK = /^\[((?:\\.|[^\]\\])*)\]\(([^)]*)\)(.*)$/;
 
 /**
  * Validate llms.txt text. Errors break the documented layout; warnings flag

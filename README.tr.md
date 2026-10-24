@@ -67,7 +67,7 @@ llms-txt-gen check [dosya] [--strict]          # llms.txt doğrular
 | `--full` | `llms.txt` yanına `llms-full.txt` (tüm içerik birleşik) de yazar. |
 | `--full-out <dosya>` | `llms-full.txt` yolu (`--full` anlamına gelir). |
 | `--max-tokens <n>` | `llms-full.txt` dosyasını yaklaşık `n` tahmini token ile sınırlar (`--full` anlamına gelir). |
-| `--base-url <url>` | Linklerin önüne eklenir. Verilmezse linkler göreli yoldur. |
+| `--base-url <url>` | Linklerin önüne eklenir. Verilmezse linkler her çıktı dosyasının klasörüne göredir (`--stdout`: girdi klasörü). |
 | `--strip-ext` | Link yollarından `.md` / `.mdx` uzantısını atar (temiz URL sunan siteler için). |
 | `--title`, `--description` | H1 başlığını ve özet blockquote'unu elle verir. |
 | `--include <glob>` | Dahil edilecek dosyalar, tekrarlanabilir. Varsayılan `**/*.md`, `**/*.mdx`. |
@@ -104,7 +104,7 @@ Ayrıca dışa açılanlar: `scanFiles`, `buildUrl`, `estimateTokens`, `parseFro
 - **Sayfa başlığı ve not:** front matter'daki `title` / `description`; yoksa ilk H1 ve ilk düz yazı paragrafı (kod blokları, listeler, alıntılar, tablolar ve rozet satırları atlanır). Notlar 160 karakterde kesilir.
 - **Bölümler:** dosyanın ilk klasörü bölüm adı olur (`guides/x.md`, `Guides` altına girer); en üstteki dosyalar `Docs` altına girer. Front matter'da `section: Ad` bunu değiştirir. Front matter'da `optional: true` ya da `--optional` eşleşmesi sayfayı her zaman en sonda olan `Optional` bölümüne taşır. `order: n` sıralar, `draft: true` sayfayı atlar. Çıktı her seferinde aynıdır.
 - **llms-full.txt:** her sayfa `# Başlık`, bir `Source:` satırı ve gövdesiyle (front matter çıkarılmış) `llms.txt` ile aynı sırada eklenir; yani `Optional` sayfalar en sondadır.
-- **`--max-tokens`:** sığdığı sürece sayfalar bütün olarak alınır. Sığmayan ilk sayfa (en az yaklaşık 100 token kaldıysa) satır sınırından kesilir ve HTML yorumuyla işaretlenir; sonrası bırakılır. `llms.txt` yine her sayfayı listeler.
+- **`--max-tokens`:** başlangıç başlığı ve özet bütçeye dahildir; sığmazlarsa üretim hata verir. Sığdığı sürece sayfalar bütün olarak alınır. Sığmayan ilk sayfa (en az yaklaşık 100 token kaldıysa) satır sınırından kesilir ve HTML yorumuyla işaretlenir; sonrası bırakılır. `llms.txt` yine her sayfayı listeler.
 - **Token tahmini:** ASCII için yaklaşık 4, diğer karakterler için 2 karakter = 1 token. Model tokenizer'ı değil, kaba bir tahmindir; pay bırakın.
 - **check:** hatalar: H1 yok ya da ilk öğe değil, bölüm içindeki liste öğesinin `[metin](url)` linkiyle başlamaması, boş link metni ya da URL, URL içinde boşluk. Uyarılar: özet blockquote yok, birden çok H1, 125 karakterden uzun H1, boş ya da yinelenen bölüm, H3+ başlıklar, liste arasında serbest metin, yinelenen URL, iki nokta olmadan not, `Optional` yazımı ya da yeri.
 

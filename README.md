@@ -67,7 +67,7 @@ llms-txt-gen check [file] [--strict]      # validate an llms.txt
 | `--full` | Also write `llms-full.txt` (all content concatenated) next to `llms.txt`. |
 | `--full-out <file>` | Path for `llms-full.txt` (implies `--full`). |
 | `--max-tokens <n>` | Cap `llms-full.txt` at about `n` estimated tokens (implies `--full`). |
-| `--base-url <url>` | Prefix for links. Without it, links are relative paths. |
+| `--base-url <url>` | Prefix for links. Without it, links are relative to each output file's directory (`--stdout`: input directory). |
 | `--strip-ext` | Drop `.md` / `.mdx` from link paths (for sites that serve clean URLs). |
 | `--title`, `--description` | Override the H1 and the summary blockquote. |
 | `--include <glob>` | Files to include, repeatable. Default `**/*.md`, `**/*.mdx`. |
@@ -104,7 +104,7 @@ See [`examples/`](examples). Run `node examples/demo.mjs` to reproduce the outpu
 - **Page title and note:** front matter `title` / `description`, otherwise the first H1 and the first prose paragraph (code blocks, lists, quotes, tables and badge rows are skipped). Notes are cut at 160 characters.
 - **Sections:** the first directory of a file names its section (`guides/x.md` goes under `Guides`); top-level files go under `Docs`. Front matter `section: Name` overrides it. `optional: true` in front matter, or a match with `--optional`, moves a page to `Optional`, which is always last. Front matter `order: n` sorts pages; `draft: true` skips them. Output is deterministic.
 - **llms-full.txt:** every page as `# Title`, a `Source:` line and its body (front matter removed), in the same order as `llms.txt`, so `Optional` pages come last.
-- **`--max-tokens`:** whole pages are kept while they fit. The first page that does not fit is cut at a line boundary (if at least about 100 tokens remain) and marked with an HTML comment; everything after it is dropped. `llms.txt` still lists every page.
+- **`--max-tokens`:** the initial title and summary count toward the budget; if they do not fit, generation fails with an error. Whole pages are kept while they fit. The first page that does not fit is cut at a line boundary (if at least about 100 tokens remain) and marked with an HTML comment; everything after it is dropped. `llms.txt` still lists every page.
 - **Token estimate:** about 4 characters per token for ASCII and 2 for other characters. It is a heuristic, not a model tokenizer; leave a safety margin.
 - **check:** errors are a missing or non-first H1, list items in a section that do not start with a `[text](url)` link, empty link text or URL, and spaces in a URL. Warnings are a missing summary blockquote, several H1s, an H1 over 125 characters, empty or duplicate sections, H3+ headings, free text between list items, duplicate URLs, notes without a colon, wrong `Optional` casing or position.
 

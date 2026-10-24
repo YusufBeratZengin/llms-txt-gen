@@ -29,3 +29,19 @@ test('skips block scalars and empty values', () => {
 test('empty front matter block yields empty data', () => {
   assert.deepEqual(parseFrontMatter('---\n---\nhi').data, {});
 });
+
+test('comments are removed before scalar conversion, preserving quoted hashes', () => {
+  const { data } = parseFrontMatter(`---
+draft: true # unpublished
+optional: false # required
+order: 2 # priority
+title: "API # reference" # comment
+section: 'User # guide' # comment
+note: "A \\"quoted # value\\"" # comment
+---
+`);
+  assert.deepEqual(data, {
+    draft: true, optional: false, order: 2,
+    title: 'API # reference', section: 'User # guide', note: 'A \\"quoted # value\\"',
+  });
+});

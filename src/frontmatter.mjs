@@ -9,7 +9,23 @@
  * @returns {string | number | boolean}
  */
 function parseScalar(raw) {
-  const value = raw.trim();
+  let value = raw.trim();
+  let quote = '';
+  for (let i = 0; i < value.length; i += 1) {
+    const char = value[i];
+    if (quote) {
+      if (quote === '"' && char === '\\') { i += 1; }
+      else if (char === quote) {
+        if (quote === "'" && value[i + 1] === "'") { i += 1; }
+        else { quote = ''; }
+      }
+    } else if (i === 0 && (char === '"' || char === "'")) {
+      quote = char;
+    } else if (char === '#' && (i === 0 || /\s/.test(value[i - 1]))) {
+      value = value.slice(0, i).trimEnd();
+      break;
+    }
+  }
   if (value.length >= 2 && (
     (value.startsWith('"') && value.endsWith('"')) ||
     (value.startsWith("'") && value.endsWith("'"))
@@ -19,7 +35,7 @@ function parseScalar(raw) {
   if (value === 'true') { return true; }
   if (value === 'false') { return false; }
   if (/^-?\d+(\.\d+)?$/.test(value)) { return Number(value); }
-  return value.replace(/\s+#.*$/, '');
+  return value;
 }
 
 /**

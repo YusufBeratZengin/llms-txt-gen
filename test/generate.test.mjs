@@ -147,3 +147,33 @@ test('output is deterministic', () => {
   const dir = tree();
   assert.equal(generate({ dir, full: true }).llmsFull, generate({ dir, full: true }).llmsFull);
 });
+
+test('commented draft flags exclude pages from both outputs', () => {
+  const dir = fixture({
+    'public.md': '# Public\n',
+    'draft.md': '---\ndraft: true # unpublished\n---\n# Internal draft\n\nPrivate body.\n',
+  });
+  const r = generate({ dir, full: true });
+  assert.deepEqual(r.docs.map(d => d.path), ['public.md']);
+  assert.ok(!r.llmsTxt.includes('Internal draft'));
+  assert.ok(!r.llmsFull?.includes('Private body'));
+});
+
+test('generated escaped bracket labels pass validation', () => {
+  const dir = fixture({ 'api.md': '# API [v2]\n\nReference.\n' });
+  const r = generate({ dir, description: 'API reference.' });
+  assert.ok(r.llmsTxt.includes('[API \\[v2\\]](api.md)'));
+  assert.deepEqual(check(r.llmsTxt), { ok: true, errors: [], warnings: [] });
+});
+
+test('full output rejects budgets smaller than its title and summary', () => {
+  const dir = fixture({ 'a.md': '# A\n\nBody.\n' });
+  const options = { dir, full: true, title: 'Project', description: 'Project summary.' };
+  assert.throws(() => generate({ ...options, maxTokens: 1 }), /maxTokens.*title and summary/);
+  const header = '# Project\n\n> Project summary.\n';
+  const budget = estimateTokens(header + '\n');
+  const r = generate({ ...options, maxTokens: budget });
+  assert.equal(r.llmsFull, header);
+  assert.ok(r.fullTokens <= budget);
+  assert.deepEqual(r.omitted, ['a.md']);
+});

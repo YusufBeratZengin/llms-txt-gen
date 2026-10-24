@@ -8,6 +8,8 @@ import { estimateTokens } from './tokens.mjs';
  * @typedef {{
  *   dir: string,
  *   baseUrl?: string,
+ *   outputDir?: string,
+ *   fullOutputDir?: string,
  *   title?: string,
  *   description?: string,
  *   include?: string[],
@@ -192,6 +194,11 @@ export function generate(options) {
   const maxDescription = options.maxDescription ?? 160;
   const baseUrl = options.baseUrl ?? '';
   const stripExt = options.stripExt ?? false;
+  const outputDir = path.resolve(options.outputDir ?? dir);
+  const fullOutputDir = path.resolve(options.fullOutputDir ?? outputDir);
+  const urlFor = (/** @type {string} */ file, /** @type {string} */ from) => buildUrl(
+    baseUrl ? file : path.relative(from, path.join(dir, file)).split(path.sep).join('/'), baseUrl, stripExt,
+  );
   const isOptional = createMatcher(options.optional ?? DEFAULT_OPTIONAL);
 
   /** @type {DocEntry[]} */
@@ -208,7 +215,7 @@ export function generate(options) {
       path: file,
       title: meta.title,
       description: truncate(stripInline(meta.description), maxDescription),
-      url: buildUrl(file, baseUrl, stripExt),
+      url: urlFor(file, outputDir),
       section,
       optional,
       order: typeof meta.data.order === 'number' ? meta.data.order : 1000,
@@ -253,7 +260,8 @@ export function generate(options) {
   /** @type {string[]} */
   const omitted = [];
   if (options.full) {
-    const built = buildFull(ordered, title, summary, maxTokens);
+    const fullDocs = ordered.map(doc => ({ ...doc, url: urlFor(doc.path, fullOutputDir) }));
+    const built = buildFull(fullDocs, title, summary, maxTokens);
     llmsFull = built.text;
     truncated = built.truncated;
     omitted.push(...built.omitted);
@@ -288,6 +296,9 @@ function buildFull(docs, title, summary, maxTokens) {
   const head = `# ${title}\n\n${summary ? `> ${summary}\n\n` : ''}`;
   let text = head;
   let used = estimateTokens(head);
+  if (maxTokens !== undefined && used > maxTokens) {
+    throw new Error(`maxTokens must be at least ${used} to fit the title and summary`);
+  }
   /** @type {string[]} */
   const omitted = [];
   let truncated = false;

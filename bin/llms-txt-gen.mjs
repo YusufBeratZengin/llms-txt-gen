@@ -131,6 +131,8 @@ function runGenerate(argv, io) {
   const result = generate({
     dir,
     baseUrl: values['base-url'],
+    outputDir: values.stdout ? dir : path.dirname(out),
+    fullOutputDir: path.dirname(fullOut),
     title: values.title,
     description: values.description,
     include: values.include,
